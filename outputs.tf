@@ -5,17 +5,31 @@ output "vpc" {
 
 output "subnets" {
   description = "The subnets created by this module"
-  value = aws_subnet.main
+  value       = aws_subnet.main
+}
+
+output "subnets_by_layer" {
+  description = "The subnets created by this module organized in a map by layer."
+  value       = { for subnet_layer_name, subnet_layer_data in var.subnet_layers : subnet_layer_name =>
+    { for subnet_name, subnet_data in subnet_layer_data.subnets : "${subnet_name}" => aws_subnet.main["${subnet_layer_name}_${subnet_name}"] }
+  }
 }
 
 output "route_tables" {
   description = "The route tables created by this module"
-  value = aws_route_table.main
+  value       = aws_route_table.main
+}
+
+output "route_tables_by_layer" {
+  description = "The route tables created by this module organized in a map by layer."
+  value       = { for subnet_layer_name, subnet_layer_data in var.subnet_layers : subnet_layer_name =>
+    { for subnet_name, subnet_data in subnet_layer_data.subnets : "${subnet_name}" => aws_route_table.main["${subnet_layer_name}_${subnet_name}"] }
+  }
 }
 
 output "route_table_associations" {
   description = "The route-table-assocations linking up subnets to their respective tables"
-  value = aws_route_table_association.main
+  value       = aws_route_table_association.main
 }
 
 output "internet_gateway" {
