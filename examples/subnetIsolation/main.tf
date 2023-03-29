@@ -103,7 +103,7 @@ resource "aws_instance" "public" {
   ami                    = data.aws_ssm_parameter.main.value
   instance_type          = "t3.large"
   key_name               = aws_key_pair.main.key_name
-  subnet_id              = module.main.subnets["public_0"].id
+  subnet_id              = module.main.subnets_by_layer["public"]["0"].id
   vpc_security_group_ids = [aws_security_group.main.id]
 
   provisioner "remote-exec" {
@@ -124,7 +124,7 @@ resource "aws_instance" "private" {
   ami                    = data.aws_ssm_parameter.main.value
   instance_type          = "t3.large"
   key_name               = aws_key_pair.main.key_name
-  subnet_id              = module.main.subnets["private_0"].id
+  subnet_id              = module.main.subnets_by_layer["private"]["0"].id
   vpc_security_group_ids = [aws_security_group.main.id]
 
   provisioner "remote-exec" {
@@ -147,7 +147,7 @@ resource "aws_instance" "isolated" {
   ami                    = data.aws_ssm_parameter.main.value
   instance_type          = "t3.large"
   key_name               = aws_key_pair.main.key_name
-  subnet_id              = module.main.subnets["isolated_0"].id
+  subnet_id              = module.main.subnets_by_layer["isolated"]["0"].id
   vpc_security_group_ids = [aws_security_group.main.id]
 
   provisioner "remote-exec" {
